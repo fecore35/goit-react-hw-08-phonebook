@@ -1,11 +1,12 @@
 import { useState } from "react";
 import s from "./ContactForm.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getContacts } from "../../redux/contacts/contacts-selectors";
+import { getContacts, getError } from "../../redux/contacts/contacts-selectors";
 import { addContactAsync } from "redux/contacts/contacts-operation";
 
 function ContactForm() {
   const contacts = useSelector(getContacts);
+  const error = useSelector(getError);
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
@@ -48,39 +49,47 @@ function ContactForm() {
   };
 
   return (
-    <form className={s.form} onSubmit={onSaveContact}>
-      <label className={s.label}>
-        Name
-        <input
-          type="text"
-          className={s.input}
-          name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-          required
-          value={name}
-          onChange={handlerChange}
-        />
-      </label>
+    <>
+      <form className={s.form} onSubmit={onSaveContact}>
+        <label className={s.label}>
+          Name
+          <input
+            type="text"
+            className={s.input}
+            name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+            required
+            value={name}
+            onChange={handlerChange}
+          />
+        </label>
 
-      <label className={s.label}>
-        Number
-        <input
-          type="tel"
-          className={s.input}
-          name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-          required
-          value={number}
-          onChange={handlerChange}
-        />
-      </label>
+        <label className={s.label}>
+          Number
+          <input
+            type="tel"
+            className={s.input}
+            name="number"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+            required
+            value={number}
+            onChange={handlerChange}
+          />
+        </label>
 
-      <button className={s.button} type="submit">
-        Add contact
-      </button>
-    </form>
+        <button className={s.button} type="submit">
+          Add contact
+        </button>
+      </form>
+
+      {error && (
+        <h2 style={{ color: "red", textTransform: "uppercase" }}>
+          Not save. {error.message}
+        </h2>
+      )}
+    </>
   );
 }
 
