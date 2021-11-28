@@ -34,7 +34,7 @@ function RegisterForm() {
     >
       {({ isSubmitting }) => (
         <Form>
-          <Field type="name" name="name" />
+          <Field type="text" name="name" />
           <ErrorMessage name="name" component="div" />
 
           <Field type="email" name="email" />
