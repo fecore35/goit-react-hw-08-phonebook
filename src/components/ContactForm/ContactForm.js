@@ -1,5 +1,7 @@
-import { useState } from "react";
-import s from "./ContactForm.module.css";
+// import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+// import s from "./ContactForm.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { getContacts, getError } from "../../redux/contacts/contacts-selectors";
 import { addContactAsync } from "redux/contacts/contacts-operation";
@@ -8,85 +10,73 @@ function ContactForm() {
   const contacts = useSelector(getContacts);
   const error = useSelector(getError);
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
 
-  const handlerChange = (event) => {
-    const { name, value } = event.target;
+  // const onSaveContact = (e) => {
+  //   e.preventDefault();
 
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
+  //   const newContactName = e.target.name.value.toUpperCase();
+  //   const knownContactToName = contacts.find(
+  //     ({ name }) => name.toUpperCase() === newContactName
+  //   );
 
-      case "number":
-        setNumber(value);
-        break;
+  //   if (knownContactToName) {
+  //     return alert(`${newContactName} is already in contacts.`);
+  //   }
 
-      default:
-        return;
-    }
-  };
+  //   const newContact = { name, phone: number };
+  //   setName("");
+  //   setNumber("");
 
-  const onSaveContact = (e) => {
-    e.preventDefault();
+  //   // ? GlobalState - add new Contact
+  //   dispatch(addContactAsync(newContact));
+  // };
 
-    const newContactName = e.target.name.value.toUpperCase();
-    const knownContactToName = contacts.find(
-      ({ name }) => name.toUpperCase() === newContactName
-    );
+  const setValidate = (values) => {
+    const errors = {};
 
-    if (knownContactToName) {
-      return alert(`${newContactName} is already in contacts.`);
+    if (!values.name) {
+      errors.name = "Required";
     }
 
-    const newContact = { name, phone: number };
-    setName("");
-    setNumber("");
+    if (!values.number) {
+      errors.number = "Required";
+    }
 
-    // ? GlobalState - add new Contact
-    dispatch(addContactAsync(newContact));
+    return errors;
   };
 
   return (
     <>
-      <form className={s.form} onSubmit={onSaveContact}>
-        <label className={s.label}>
-          Name
-          <input
-            type="text"
-            className={s.input}
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            required
-            value={name}
-            onChange={handlerChange}
-          />
-        </label>
+      <Formik
+        initialValues={{ name: "", number: "" }}
+        validate={setValidate}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <label htmlFor="name">Name</label>
+            <Field type="text" name="name" id="name" />
+            <ErrorMessage name="name" component="div" />
 
-        <label className={s.label}>
-          Number
-          <input
-            type="tel"
-            className={s.input}
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-            required
-            value={number}
-            onChange={handlerChange}
-          />
-        </label>
+            <label htmlFor="phoneNumber">Number</label>
+            <Field type="tel" name="number" id="phoneNumber" />
+            <ErrorMessage name="number" component="div" />
 
-        <button className={s.button} type="submit">
-          Add contact
-        </button>
-      </form>
+            <button type="submit" disabled={isSubmitting}>
+              Add contact
+            </button>
+          </Form>
+        )}
+      </Formik>
 
       {error && (
         <h2 style={{ color: "red", textTransform: "uppercase" }}>
-          Not save. {error.message}
+          {error.message}
         </h2>
       )}
     </>
