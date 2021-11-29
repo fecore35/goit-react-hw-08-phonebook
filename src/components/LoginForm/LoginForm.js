@@ -1,6 +1,10 @@
+import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { authOperations } from "redux/auth";
 
 function LoginForm() {
+  const dispatch = useDispatch();
+
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -16,10 +20,8 @@ function LoginForm() {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+        dispatch(authOperations.logIn(values));
+        setSubmitting(false);
       }}
     >
       {({ isSubmitting }) => (
