@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import CustomLink from "components/CustomLink";
+import UserMenu from "components/UserMenu";
 
 function Header() {
   return (
@@ -13,14 +14,10 @@ function Header() {
             <li>
               <CustomLink to="/create">Create contact</CustomLink>
             </li>
-            <li>
-              <CustomLink to="/register">Register</CustomLink>
-            </li>
-            <li>
-              <CustomLink to="/login">Login</CustomLink>
-            </li>
           </ul>
         </nav>
+
+        <UserMenu />
       </header>
 
       <Outlet />
