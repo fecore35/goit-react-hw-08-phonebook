@@ -8,6 +8,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import { contactsReducer } from "./contacts/contacts-reducer";
+import { authReducer } from "redux/auth";
 
 const firstMiddleware = (state) => (next) => (action) => {
   // console.log("firstMiddleware-> ", action);
@@ -26,6 +27,7 @@ const middleware = [
 const store = configureStore({
   reducer: {
     contacts: contactsReducer,
+    auth: authReducer,
   },
   middleware,
   devTools: true ?? process.env.NODE_ENV === "development",
