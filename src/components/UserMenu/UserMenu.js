@@ -6,7 +6,7 @@ function UserMenu() {
   const mail = useSelector(authSelectors.getUserEmail);
   const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
   const dispatch = useDispatch();
-  console.log(isLoggedIn);
+
   return (
     <div>
       {isLoggedIn ? (
