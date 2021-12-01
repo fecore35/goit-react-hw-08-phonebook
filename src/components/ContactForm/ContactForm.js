@@ -8,9 +8,7 @@ import { addContactAsync } from "redux/contacts/contacts-operation";
 import * as yup from "yup";
 
 /* Material UI */
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { Box, Button, TextField } from "@mui/material";
 
 function ContactForm() {
   const contacts = useSelector(getContacts);
