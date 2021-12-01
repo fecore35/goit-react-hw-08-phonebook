@@ -1,32 +1,46 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Route, Routes } from "react-router";
 import { useDispatch } from "react-redux";
-import Header from "components/Header";
-import HomeView from "views/HomeView";
-import CreateView from "views/CreateView";
-import RegisterView from "views/RegisterView";
-import LoginView from "views/LoginView";
-import NoFoundView from "views/NotFoundView";
 import { authOperations } from "redux/auth";
+const Header = lazy(() =>
+  import("components/Header" /* webpackChunkName: 'header-view' */)
+);
+const HomeView = lazy(() =>
+  import("views/HomeView" /* webpackChunkName: 'home-view' */)
+);
+const CreateView = lazy(() =>
+  import("views/CreateView" /* webpackChunkName: 'create-view' */)
+);
+const RegisterView = lazy(() =>
+  import("views/RegisterView" /* webpackChunkName: 'register-view' */)
+);
+const LoginView = lazy(() =>
+  import("views/LoginView" /* webpackChunkName: 'login-view' */)
+);
+const NotFoundView = lazy(() =>
+  import("views/NotFoundView" /* webpackChunkName: '404-view' */)
+);
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(authOperations.fetchCurrentUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="container">
-      <Routes>
-        <Route path="/" element={<Header />}>
-          <Route index element={<HomeView />} />
-          <Route path="create" element={<CreateView />} />
-          <Route path="register" element={<RegisterView />} />
-          <Route path="login" element={<LoginView />} />
-          <Route path="*" element={<NoFoundView />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<h1>Loading </h1>}>
+        <Routes>
+          <Route path="/" element={<Header />}>
+            <Route index element={<HomeView />} />
+            <Route path="create" element={<CreateView />} />
+            <Route path="register" element={<RegisterView />} />
+            <Route path="login" element={<LoginView />} />
+            <Route path="*" element={<NotFoundView />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </div>
   );
 }
