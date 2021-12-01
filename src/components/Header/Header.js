@@ -12,7 +12,7 @@ function Header() {
               <CustomLink to="/">Home</CustomLink>
             </li>
             <li>
-              <CustomLink to="/create">Create contact</CustomLink>
+              <CustomLink to="/contacts">Contacts</CustomLink>
             </li>
           </ul>
         </nav>

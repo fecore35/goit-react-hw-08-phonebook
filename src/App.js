@@ -8,8 +8,8 @@ const Header = lazy(() =>
 const HomeView = lazy(() =>
   import("views/HomeView" /* webpackChunkName: 'home-view' */)
 );
-const CreateView = lazy(() =>
-  import("views/CreateView" /* webpackChunkName: 'create-view' */)
+const ContactsView = lazy(() =>
+  import("views/ContactsView" /* webpackChunkName: 'contacts-view' */)
 );
 const RegisterView = lazy(() =>
   import("views/RegisterView" /* webpackChunkName: 'register-view' */)
@@ -34,7 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Header />}>
             <Route index element={<HomeView />} />
-            <Route path="create" element={<CreateView />} />
+            <Route path="contacts" element={<ContactsView />} />
             <Route path="register" element={<RegisterView />} />
             <Route path="login" element={<LoginView />} />
             <Route path="*" element={<NotFoundView />} />
