@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/HomeView.js"],"names":["HomeView"],"mappings":"kKAQeA,UARf,WACE,OACE,mCACE","file":"static/js/home-view.4acc7c75.chunk.js","sourcesContent":["function HomeView() {\n  return (\n    <>\n      <h1>Phonebook</h1>\n    </>\n  );\n}\n\nexport default HomeView;\n"],"sourceRoot":""}
