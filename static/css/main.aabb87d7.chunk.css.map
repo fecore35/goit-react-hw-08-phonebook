@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/index.css"],"names":[],"mappings":"AAAA,WACE,eAAgB,CAChB,gBAAiB,CACjB,iBACF","file":"main.aabb87d7.chunk.css","sourcesContent":[".container {\n  max-width: 800px;\n  margin-left: auto;\n  margin-right: auto;\n}\n"]}
