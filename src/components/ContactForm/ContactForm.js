@@ -1,7 +1,5 @@
-// import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-// import s from "./ContactForm.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { getContacts, getError } from "../../redux/contacts/contacts-selectors";
 import { addContactAsync } from "redux/contacts/contacts-operation";
@@ -11,25 +9,21 @@ function ContactForm() {
   const error = useSelector(getError);
   const dispatch = useDispatch();
 
-  // const onSaveContact = (e) => {
-  //   e.preventDefault();
+  const onSaveContact = (values, { setSubmitting, resetForm }) => {
+    const newContactName = values.name.toUpperCase();
+    const knownContactToName = contacts.find(
+      ({ name }) => name.toUpperCase() === newContactName
+    );
 
-  //   const newContactName = e.target.name.value.toUpperCase();
-  //   const knownContactToName = contacts.find(
-  //     ({ name }) => name.toUpperCase() === newContactName
-  //   );
+    if (knownContactToName) {
+      setSubmitting(false);
+      return alert(`${newContactName} is already in contacts.`);
+    }
 
-  //   if (knownContactToName) {
-  //     return alert(`${newContactName} is already in contacts.`);
-  //   }
-
-  //   const newContact = { name, phone: number };
-  //   setName("");
-  //   setNumber("");
-
-  //   // ? GlobalState - add new Contact
-  //   dispatch(addContactAsync(newContact));
-  // };
+    dispatch(addContactAsync(values));
+    resetForm();
+    setSubmitting(false);
+  };
 
   const setValidate = (values) => {
     const errors = {};
@@ -50,12 +44,7 @@ function ContactForm() {
       <Formik
         initialValues={{ name: "", number: "" }}
         validate={setValidate}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
+        onSubmit={onSaveContact}
       >
         {({ isSubmitting }) => (
           <Form>

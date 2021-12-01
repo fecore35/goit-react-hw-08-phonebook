@@ -33,7 +33,7 @@ function ContactList() {
       )}
 
       {visibleContacts &&
-        visibleContacts.map(({ id, name, phone: number }) => {
+        visibleContacts.map(({ id, name, number }) => {
           const tel = `tel:` + number.replace(/^(\+)|\D/g, "$1");
           return (
             <li key={id} className={s.item}>
