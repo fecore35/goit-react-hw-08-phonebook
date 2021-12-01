@@ -1,8 +1,16 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getContacts, getError } from "../../redux/contacts/contacts-selectors";
 import { addContactAsync } from "redux/contacts/contacts-operation";
+
+/* yup: value validation */
+import * as yup from "yup";
+
+/* Material UI */
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 function ContactForm() {
   const contacts = useSelector(getContacts);
@@ -25,43 +33,61 @@ function ContactForm() {
     setSubmitting(false);
   };
 
-  const setValidate = (values) => {
-    const errors = {};
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-    if (!values.name) {
-      errors.name = "Required";
-    }
+  const setValidate = yup.object({
+    name: yup.string("Enter name").required("Name is required"),
+    number: yup
+      .string("Enter Phone number")
+      .matches(phoneRegExp, "Phone number is not valid")
+      .required("Phone number is required"),
+  });
 
-    if (!values.number) {
-      errors.number = "Required";
-    }
-
-    return errors;
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      number: "",
+    },
+    validationSchema: setValidate,
+    onSubmit: onSaveContact,
+  });
 
   return (
     <>
-      <Formik
-        initialValues={{ name: "", number: "" }}
-        validate={setValidate}
-        onSubmit={onSaveContact}
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "100%" },
+        }}
+        noValidate
+        onSubmit={formik.handleSubmit}
+        autoComplete="off"
       >
-        {({ isSubmitting }) => (
-          <Form>
-            <label htmlFor="name">Name</label>
-            <Field type="text" name="name" id="name" />
-            <ErrorMessage name="name" component="div" />
-
-            <label htmlFor="phoneNumber">Number</label>
-            <Field type="tel" name="number" id="phoneNumber" />
-            <ErrorMessage name="number" component="div" />
-
-            <button type="submit" disabled={isSubmitting}>
-              Add contact
-            </button>
-          </Form>
-        )}
-      </Formik>
+        <TextField
+          fullWidth
+          id="name"
+          name="name"
+          label="Name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+        />
+        <TextField
+          fullWidth
+          id="number"
+          name="number"
+          label="Phone number"
+          value={formik.values.number}
+          onChange={formik.handleChange}
+          error={formik.touched.number && Boolean(formik.errors.number)}
+          helperText={formik.touched.number && formik.errors.number}
+        />
+        <Button color="primary" variant="contained" fullWidth type="submit">
+          Add contact
+        </Button>
+      </Box>
 
       {error && (
         <h2 style={{ color: "red", textTransform: "uppercase" }}>
