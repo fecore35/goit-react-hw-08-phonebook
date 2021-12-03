@@ -31,7 +31,8 @@ function RegisterForm() {
   const formik = useFormik({
     initialValues: {
       name: "",
-      number: "",
+      email: "",
+      password: "",
     },
     validationSchema: setValidate,
     onSubmit: onRegister,
