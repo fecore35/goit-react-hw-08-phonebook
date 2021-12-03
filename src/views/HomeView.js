@@ -1,7 +1,9 @@
+import Title from "components/Title";
+
 function HomeView() {
   return (
     <>
-      <h1>Phonebook</h1>
+      <Title name="Phonebook" />
     </>
   );
 }

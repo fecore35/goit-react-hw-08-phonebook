@@ -1,6 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { authSelectors, authOperations } from "redux/auth";
 import CustomLink from "components/CustomLink";
+import { Box, Typography, Button } from "@mui/material";
+import Logout from "@mui/icons-material/Logout";
 
 function UserMenu() {
   const mail = useSelector(authSelectors.getUserEmail);
@@ -8,28 +10,35 @@ function UserMenu() {
   const dispatch = useDispatch();
 
   return (
-    <div>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        textAlign: "center",
+        marginLeft: "auto",
+      }}
+    >
       {isLoggedIn ? (
         <>
-          <span>{mail}</span>
-          <button
-            type="button"
+          <Typography mr={2} variant="caption" display="block" gutterBottom>
+            {mail}
+          </Typography>
+
+          <Button
+            variant="contained"
+            endIcon={<Logout />}
             onClick={() => dispatch(authOperations.logOut())}
           >
             Logout
-          </button>
+          </Button>
         </>
       ) : (
-        <ul>
-          <li>
-            <CustomLink to="/register">Register</CustomLink>
-          </li>
-          <li>
-            <CustomLink to="/login">Login</CustomLink>
-          </li>
-        </ul>
+        <>
+          <CustomLink to="/register">Register</CustomLink>
+          <CustomLink to="/login">Login</CustomLink>
+        </>
       )}
-    </div>
+    </Box>
   );
 }
 

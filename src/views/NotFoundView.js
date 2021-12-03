@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import Title from "components/Title";
 
 function NotFoundView() {
   return (
     <div>
-      <h1>Nothing to see here!</h1>
+      <Title name="Nothing to see here!" />
+
       <p>
         <Link to="/">Go to the home page</Link>
       </p>

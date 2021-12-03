@@ -2,8 +2,6 @@ import { useState, lazy } from "react";
 
 /* Material UI */
 import {
-  Stack,
-  Typography,
   Button,
   Dialog,
   DialogTitle,
@@ -11,6 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import Title from "components/Title";
 
 const ContactList = lazy(() =>
   import("components/ContactList" /* webpackChunkName: 'contact-list' */)
@@ -35,20 +34,11 @@ export default function ContactsView() {
 
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={0}
-        my={5}
-      >
-        <Typography variant="h4" gutterBottom component="div">
-          Contact List
-        </Typography>
+      <Title name="Contact List">
         <Button variant="outlined" onClick={handleClickOpen}>
           Create contact
         </Button>
-      </Stack>
+      </Title>
 
       <Dialog open={isModalOpen} onClose={handleClose}>
         <DialogTitle>

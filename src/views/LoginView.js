@@ -1,9 +1,10 @@
 import LoginForm from "components/LoginForm";
+import Title from "components/Title";
 
 function LoginView() {
   return (
     <>
-      <h1>Login</h1>
+      <Title name="Login" />
 
       <LoginForm />
     </>

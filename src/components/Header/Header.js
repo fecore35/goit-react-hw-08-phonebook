@@ -1,23 +1,34 @@
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 import CustomLink from "components/CustomLink";
 import UserMenu from "components/UserMenu";
+import { authSelectors } from "redux/auth";
+import { Box } from "@mui/material";
 
 function Header() {
+  const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
+
   return (
     <>
       <header>
-        <nav>
-          <ul>
-            <li>
+        <Box
+          sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
+        >
+          <nav>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
               <CustomLink to="/">Home</CustomLink>
-            </li>
-            <li>
-              <CustomLink to="/contacts">Contacts</CustomLink>
-            </li>
-          </ul>
-        </nav>
+              {isLoggedIn && <CustomLink to="/contacts">Contacts</CustomLink>}
+            </Box>
+          </nav>
 
-        <UserMenu />
+          <UserMenu />
+        </Box>
       </header>
 
       <Outlet />

@@ -1,9 +1,10 @@
 import RegisterForm from "components/RegisterForm/";
+import Title from "components/Title";
 
 function RegisterView() {
   return (
     <>
-      <h1>Register</h1>
+      <Title name="Register" />
 
       <RegisterForm />
     </>
