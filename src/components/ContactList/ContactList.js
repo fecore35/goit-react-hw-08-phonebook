@@ -1,7 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IoCloseCircleSharp } from "react-icons/io5";
-import s from "./ContactList.module.css";
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import {
   getVisibleContacts,
   getError,
@@ -20,40 +29,61 @@ function ContactList() {
     dispatch(getContactsAsync());
   }, [dispatch]);
 
-  console.log(error && error.message);
-
   return (
-    <ul className={s.list}>
+    <>
       {error && (
-        <li>
-          <h2 style={{ color: "red", textTransform: "uppercase" }}>
-            {error.message}
-          </h2>
-        </li>
+        <h2 style={{ color: "red", textTransform: "uppercase" }}>
+          {error.message}
+        </h2>
       )}
 
-      {visibleContacts &&
-        visibleContacts.map(({ id, name, number }) => {
-          const tel = `tel:` + number.replace(/^(\+)|\D/g, "$1");
-          return (
-            <li key={id} className={s.item}>
-              <p>
-                {name}: <a href={tel}>{number}</a>
-              </p>
-              <button
-                className={s.button}
-                type="button"
-                data-id={id}
-                onClick={(e) => {
-                  dispatch(deleteContactAsync(e.currentTarget.dataset.id));
-                }}
-              >
-                <IoCloseCircleSharp />
-              </button>
-            </li>
-          );
-        })}
-    </ul>
+      {visibleContacts && (
+        <List dense={false}>
+          {visibleContacts &&
+            visibleContacts.map(({ id, name, number }) => {
+              const tel = `tel:` + number.replace(/^(\+)|\D/g, "$1");
+              return (
+                <ListItem
+                  key={id}
+                  secondaryAction={
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={(e) => {
+                        dispatch(deleteContactAsync(id));
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                >
+                  <ListItemAvatar>
+                    <Avatar>
+                      <PersonOutlineIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={name}
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          Phone
+                        </Typography>
+                        {" — "} <a href={tel}>{number}</a>
+                      </>
+                    }
+                  />
+                </ListItem>
+              );
+            })}
+        </List>
+      )}
+    </>
   );
 }
 
