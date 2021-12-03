@@ -2,6 +2,8 @@ import { useEffect, lazy, Suspense } from "react";
 import { Route, Routes } from "react-router";
 import { useDispatch } from "react-redux";
 import { authOperations } from "redux/auth";
+import PrivateRoute from "routes/PrivateRoute";
+import PublicRoute from "routes/PublicRoute";
 const Header = lazy(() =>
   import("components/Header" /* webpackChunkName: 'header-view' */)
 );
@@ -33,10 +35,31 @@ function App() {
       <Suspense fallback={<h1>Loading </h1>}>
         <Routes>
           <Route path="/" element={<Header />}>
-            <Route index element={<HomeView />} />
-            <Route path="contacts" element={<ContactsView />} />
-            <Route path="register" element={<RegisterView />} />
-            <Route path="login" element={<LoginView />} />
+            <Route index element={<PublicRoute component={<HomeView />} />} />
+            <Route
+              path="contacts"
+              element={<PrivateRoute component={<ContactsView />} />}
+            />
+            <Route
+              path="register"
+              element={
+                <PublicRoute
+                  restricted
+                  to="/contacts"
+                  component={<RegisterView />}
+                />
+              }
+            />
+            <Route
+              path="login"
+              element={
+                <PublicRoute
+                  restricted
+                  to="/contacts"
+                  component={<LoginView />}
+                />
+              }
+            />
             <Route path="*" element={<NotFoundView />} />
           </Route>
         </Routes>
